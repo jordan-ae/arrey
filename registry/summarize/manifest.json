@@ -1,0 +1,39 @@
+{
+  "name": "summarize",
+  "version": "1.0.0",
+  "description": "Summarizes text, files, and URLs into configurable formats. Handles long documents via semantic chunking.",
+  "arrey": ">=1.0.0",
+  "input": {
+    "content": "string",
+    "format?": "string",
+    "maxWords?": "number",
+    "instruction?": "string"
+  },
+  "output": {
+    "summary": "string",
+    "format": "string",
+    "wordCount": "number",
+    "chunks": "number",
+    "model": "string"
+  },
+  "composes": [],
+  "optionalDeps": [],
+  "examples": [
+    {
+      "description": "Summarize a local PDF as bullet points",
+      "input": { "content": "./report.pdf", "format": "bullets" }
+    },
+    {
+      "description": "Summarize a URL as an executive summary",
+      "input": { "content": "https://example.com/article", "format": "executive" }
+    },
+    {
+      "description": "Summarize with a domain instruction",
+      "input": {
+        "content": "paste text here",
+        "format": "tldr",
+        "instruction": "Focus on financial figures and ignore background context."
+      }
+    }
+  ]
+}

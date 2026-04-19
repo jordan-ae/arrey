@@ -1,0 +1,39 @@
+{
+  "name": "translate",
+  "version": "1.0.0",
+  "description": "Translates text, files, or URLs into a target language. Preserves structure, supports tone, glossary, and long documents via chunking.",
+  "arrey": ">=1.0.0",
+  "input": {
+    "content": "string",
+    "targetLang": "string",
+    "sourceLang?": "string",
+    "tone?": { "type": "string", "enum": ["neutral", "formal", "casual", "literal"] },
+    "glossary?": { "type": "object", "fields": {} },
+    "instruction?": "string"
+  },
+  "output": {
+    "translation": "string",
+    "sourceLang": "string",
+    "targetLang": "string",
+    "tone": "string",
+    "chunks": "number",
+    "model": "string"
+  },
+  "composes": [],
+  "optionalDeps": [],
+  "examples": [
+    {
+      "description": "Translate a markdown file to Spanish, preserving headings and code",
+      "input": { "content": "./docs/intro.md", "targetLang": "Spanish" }
+    },
+    {
+      "description": "Translate with a glossary and a formal tone",
+      "input": {
+        "content": "Welcome to arrey. Please contact our customer team.",
+        "targetLang": "German",
+        "tone": "formal",
+        "glossary": { "arrey": "arrey", "customer team": "Kundenteam" }
+      }
+    }
+  ]
+}

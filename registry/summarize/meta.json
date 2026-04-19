@@ -1,0 +1,5 @@
+{
+  "name": "summarize",
+  "version": "1.0.0",
+  "files": ["index.ts", "prompt.ts", "manifest.json", "README.md"]
+}

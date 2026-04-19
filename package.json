@@ -1,0 +1,11 @@
+{
+  "name": "arrey-repo",
+  "private": true,
+  "workspaces": [
+    "cli"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace arrey"
+  }
+}
+

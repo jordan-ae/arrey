@@ -1,0 +1,39 @@
+{
+  "name": "extract",
+  "version": "1.0.0",
+  "description": "Extracts key facts from text, files, and URLs in configurable output formats.",
+  "arrey": ">=1.0.0",
+  "input": {
+    "content": "string",
+    "format?": "string",
+    "maxItems?": "number",
+    "instruction?": "string"
+  },
+  "output": {
+    "extraction": "string",
+    "format": "string",
+    "chunks": "number",
+    "model": "string"
+  },
+  "composes": [],
+  "optionalDeps": [],
+  "examples": [
+    {
+      "description": "Extract key facts as bullet points",
+      "input": { "content": "./meeting-notes.md", "format": "bullets" }
+    },
+    {
+      "description": "Extract from a URL as JSON",
+      "input": { "content": "https://example.com/brief", "format": "json" }
+    },
+    {
+      "description": "Limit output to top 5 findings",
+      "input": {
+        "content": "paste text here",
+        "format": "bullets",
+        "maxItems": 5,
+        "instruction": "Prioritize legal and financial risk facts."
+      }
+    }
+  ]
+}

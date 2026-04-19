@@ -1,0 +1,53 @@
+{
+  "name": "classify",
+  "version": "1.0.0",
+  "description": "Classifies text, files, or URLs into a fixed set of labels. Single-label or multi-label with per-label confidence and reasoning.",
+  "arrey": ">=1.0.0",
+  "input": {
+    "content": "string",
+    "labels": "string[]",
+    "multiLabel?": "boolean",
+    "labelDescriptions?": { "type": "object", "fields": {} },
+    "instruction?": "string"
+  },
+  "output": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "fields": {
+          "label": "string",
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+          "reasoning": "string"
+        }
+      }
+    },
+    "topLabel": "string",
+    "multiLabel": "boolean",
+    "model": "string"
+  },
+  "composes": [],
+  "optionalDeps": [],
+  "examples": [
+    {
+      "description": "Classify a support ticket into a fixed category",
+      "input": {
+        "content": "My card was charged twice for the same order, please refund one.",
+        "labels": ["billing", "shipping", "account", "technical"]
+      }
+    },
+    {
+      "description": "Multi-label topic tagging with disambiguation",
+      "input": {
+        "content": "./article.md",
+        "labels": ["security", "performance", "dx"],
+        "multiLabel": true,
+        "labelDescriptions": {
+          "security": "vulnerabilities, auth, encryption, threats",
+          "performance": "speed, latency, memory, scaling",
+          "dx": "developer experience, tooling, ergonomics"
+        }
+      }
+    }
+  ]
+}

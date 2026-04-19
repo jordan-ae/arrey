@@ -1,0 +1,38 @@
+{
+  "name": "transcribe",
+  "version": "1.0.0",
+  "description": "Transcribes audio from URLs with optional cleanup and provider-aware configuration.",
+  "arrey": ">=1.0.0",
+  "experimental": true,
+  "input": {
+    "audioUrl": "string",
+    "language?": "string",
+    "instruction?": "string",
+    "clean?": "boolean"
+  },
+  "output": {
+    "transcript": "string",
+    "model": "string",
+    "language?": "string"
+  },
+  "composes": [],
+  "optionalDeps": ["openai", "@anthropic-ai/sdk"],
+  "examples": [
+    {
+      "description": "Transcribe an English meeting recording",
+      "input": {
+        "audioUrl": "https://example.com/meeting.wav",
+        "language": "en"
+      }
+    },
+    {
+      "description": "Transcribe and clean the transcript",
+      "input": {
+        "audioUrl": "https://example.com/interview.mp3",
+        "clean": true,
+        "instruction": "Preserve all company and product names exactly."
+      }
+    }
+  ],
+  "tags": ["audio", "experimental"]
+}

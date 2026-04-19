@@ -1,0 +1,49 @@
+{
+  "name": "arrey",
+  "version": "0.2.0",
+  "description": "Install production-ready AI tools as editable code.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "arrey": "dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format cjs --target node18 --clean --dts",
+    "dev": "tsup src/index.ts src/cli.ts --format cjs --target node18 --watch",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "axios": "^1.8.2",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "fs-extra": "^11.3.0",
+    "jiti": "^2.4.2",
+    "ora": "^5.4.1",
+    "yaml": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=0.0.0",
+    "openai": ">=0.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "openai": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.14.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.8"
+  }
+}
