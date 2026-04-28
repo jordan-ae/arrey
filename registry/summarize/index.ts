@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // arrey/tools/summarize/index.ts
 
-import type { ArreyContext, RunOptions } from "arrey";
+import type { ArreyContext, RunOptions } from "arrey-cli";
 import { prompts } from "./prompt";
 
 // ─── Input / Output types ────────────────────────────────────
@@ -172,7 +172,7 @@ function toRunOptions(props: SummarizeCallProps): RunOptions | undefined {
 }
 
 export async function summarize(props: SummarizeCallProps): Promise<SummarizeOutput> {
-  const { arrey } = await import("arrey");
+  const { arrey } = await import("arrey-cli");
   return arrey.run<SummarizeInput, SummarizeOutput>(
     "summarize",
     {

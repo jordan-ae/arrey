@@ -4,7 +4,7 @@
 // This file is the execution logic for the classify tool.
 // ─────────────────────────────────────────────────────────────
 
-import type { ArreyContext, RunOptions } from "arrey";
+import type { ArreyContext, RunOptions } from "arrey-cli";
 import { prompts } from "./prompt";
 
 // ─── Input / Output types ────────────────────────────────────
@@ -213,7 +213,7 @@ function toRunOptions(props: ClassifyCallProps): RunOptions | undefined {
 }
 
 export async function classify(props: ClassifyCallProps): Promise<ClassifyOutput> {
-  const { arrey } = await import("arrey");
+  const { arrey } = await import("arrey-cli");
   return arrey.run<ClassifyInput, ClassifyOutput>(
     "classify",
     {

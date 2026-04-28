@@ -2,12 +2,12 @@
 // arrey/tools/translate/index.ts
 
 
-import type { ArreyContext, RunOptions } from "arrey";
+import type { ArreyContext, RunOptions } from "arrey-cli";
 import { prompts } from "./prompt";
 
 // ─── Input / Output types ────────────────────────────────────
 
-export interface TranslateInput {
+export type TranslateInput = {
   /** Text content, file path, or URL to translate */
   content: string;
 
@@ -182,7 +182,7 @@ function toRunOptions(props: TranslateCallProps): RunOptions | undefined {
 }
 
 export async function translate(props: TranslateCallProps): Promise<TranslateOutput> {
-  const { arrey } = await import("arrey");
+  const { arrey } = await import("arrey-cli");
   return arrey.run<TranslateInput, TranslateOutput>(
     "translate",
     {

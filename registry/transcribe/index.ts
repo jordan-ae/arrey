@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 // arrey/tools/transcribe/index.ts
 
-import type { ArreyContext, RunOptions } from "arrey";
+import type { ArreyContext, RunOptions } from "arrey-cli";
 import { prompts } from "./prompt";
 
 // ─── Input / Output types ────────────────────────────────────
@@ -127,7 +127,7 @@ function toRunOptions(props: TranscribeCallProps): RunOptions | undefined {
 }
 
 export async function transcribe(props: TranscribeCallProps): Promise<TranscribeOutput> {
-  const { arrey } = await import("arrey");
+  const { arrey } = await import("arrey-cli");
   return arrey.run<TranscribeInput, TranscribeOutput>(
     "transcribe",
     {

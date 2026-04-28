@@ -5,7 +5,7 @@
     "cli"
   ],
   "scripts": {
-    "build": "npm run build --workspace arrey"
+    "build": "npm run build --workspace arrey-cli"
   }
 }
 

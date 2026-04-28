@@ -2,7 +2,7 @@
 // arrey/tools/extract/index.ts
 
 
-import type { ArreyContext, RunOptions } from "arrey";
+import type { ArreyContext, RunOptions } from "arrey-cli";
 import { prompts } from "./prompt";
 
 // ─── Input / Output types ────────────────────────────────────
@@ -158,7 +158,7 @@ function toRunOptions(props: ExtractCallProps): RunOptions | undefined {
 }
 
 export async function extract(props: ExtractCallProps): Promise<ExtractOutput> {
-  const { arrey } = await import("arrey");
+  const { arrey } = await import("arrey-cli");
   return arrey.run<ExtractInput, ExtractOutput>(
     "extract",
     {
