@@ -60,7 +60,7 @@ afterEach(async () => {
 describe("CLI command integration", () => {
   it("init scaffolds arrey.config.yaml and arrey/tools", async () => {
     const projectRoot = await createTempDir("arrey-cli-init-");
-    await runInitCommand(projectRoot);
+    await runInitCommand(projectRoot, { install: false });
 
     expect(await fs.pathExists(path.join(projectRoot, "arrey", "tools"))).toBe(true);
     expect(await fs.pathExists(path.join(projectRoot, "arrey.config.yaml"))).toBe(true);
@@ -72,8 +72,8 @@ describe("CLI command integration", () => {
     await scaffoldRegistry(registryRoot);
     process.env.ARREY_REGISTRY_PATH = registryRoot;
 
-    await runInitCommand(projectRoot);
-    await runAddCommand("summarize", projectRoot);
+    await runInitCommand(projectRoot, { install: false });
+    await runAddCommand("summarize", projectRoot, { install: false });
 
     const toolRoot = path.join(projectRoot, "arrey", "tools", "summarize");
     expect(await fs.pathExists(path.join(toolRoot, "index.ts"))).toBe(true);
@@ -94,7 +94,7 @@ describe("CLI command integration", () => {
     await fs.ensureDir(path.join(projectRoot, "ai-tools"));
     await fs.writeFile(path.join(projectRoot, "ai-tools", "legacy.txt"), "legacy", "utf8");
 
-    await expect(runAddCommand("summarize", projectRoot)).rejects.toThrow(
+    await expect(runAddCommand("summarize", projectRoot, { install: false })).rejects.toThrow(
       "Legacy tool layout detected"
     );
   });

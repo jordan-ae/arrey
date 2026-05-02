@@ -1,6 +1,6 @@
 {
   "name": "arrey-cli",
-  "version": "0.2.1",
+  "version": "0.2.5",
   "description": "Install production-ready AI tools as editable code.",
   "license": "MIT",
   "main": "dist/index.js",

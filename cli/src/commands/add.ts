@@ -2,7 +2,7 @@ import path from "node:path";
 import { Command } from "commander";
 import { installToolFiles } from "../core/installer";
 import { addInstalledToolToConfig } from "../core/project-config";
-import { ensureProjectTypings } from "../core/project-deps";
+import { ensureProjectTypings, runPackageInstall } from "../core/project-deps";
 import { logger } from "../core/logger";
 import {
   fetchToolFile,
@@ -12,19 +12,25 @@ import {
   ToolNotFoundError
 } from "../core/registry";
 
+export interface RunAddCommandOptions {
+  install?: boolean;
+}
+
 function normalizeToolName(tool: string): string {
   return tool.trim().toLowerCase();
 }
 
 export async function runAddCommand(
   rawToolName: string,
-  projectRoot = process.cwd()
+  projectRoot = process.cwd(),
+  options: RunAddCommandOptions = {}
 ): Promise<void> {
   const toolName = normalizeToolName(rawToolName);
 
   const spinner = logger.spinner(`Fetching ${toolName} metadata`);
   spinner.start();
 
+  let typings;
   try {
     const meta = await fetchToolMeta(toolName, projectRoot);
     spinner.text = logger.format(`Downloading ${meta.files.length} file(s) for ${toolName}`);
@@ -43,7 +49,7 @@ export async function runAddCommand(
       files
     });
     await addInstalledToolToConfig(projectRoot, toolName);
-    const typings = await ensureProjectTypings(projectRoot);
+    typings = await ensureProjectTypings(projectRoot);
 
     const relativeTarget = path.relative(projectRoot, result.toolDirectory) || result.toolDirectory;
     spinner.succeed(logger.format(`Installed ${toolName} -> ${relativeTarget}`));
@@ -60,15 +66,6 @@ export async function runAddCommand(
       for (const file of result.skippedFiles) {
         logger.item(file);
       }
-    }
-
-    if (typings.createdTsconfig) {
-      logger.info("Created tsconfig.json with Node typings enabled.");
-    }
-    if (typings.addedDevDeps.length > 0) {
-      logger.info(
-        `Added devDependencies: ${typings.addedDevDeps.join(", ")}. Run your package manager's install to fetch them.`
-      );
     }
   } catch (error: unknown) {
     spinner.stop();
@@ -87,6 +84,37 @@ export async function runAddCommand(
 
     throw error;
   }
+
+  if (typings.createdPackageJson) {
+    logger.info("Created package.json (no existing one was found).");
+  }
+  if (typings.createdTsconfig) {
+    logger.info("Created tsconfig.json with Node typings enabled.");
+  }
+
+  const addedDeps = [...typings.addedDeps, ...typings.addedDevDeps];
+  if (addedDeps.length === 0) {
+    return;
+  }
+
+  if (options.install === false) {
+    logger.info(
+      `Added to package.json: ${addedDeps.join(", ")}. Run \`npm install\` to fetch them.`
+    );
+    return;
+  }
+
+  logger.info(`Added to package.json: ${addedDeps.join(", ")}. Running install...`);
+  try {
+    await runPackageInstall(projectRoot);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      logger.error(`Install failed: ${error.message}`);
+    } else {
+      logger.error("Install failed.");
+    }
+    throw error;
+  }
 }
 
 export function registerAddCommand(program: Command): void {
@@ -94,9 +122,10 @@ export function registerAddCommand(program: Command): void {
     .command("add")
     .argument("<tool>", "Tool name to install")
     .description("Install a registry tool into arrey/tools/<tool>")
-    .action(async (rawToolName: string) => {
+    .option("--no-install", "Skip running your package manager's install after writing dependencies")
+    .action(async (rawToolName: string, options: { install?: boolean }) => {
       try {
-        await runAddCommand(rawToolName, process.cwd());
+        await runAddCommand(rawToolName, process.cwd(), { install: options.install });
       } catch {
         process.exitCode = 1;
       }
