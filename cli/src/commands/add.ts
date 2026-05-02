@@ -2,6 +2,7 @@ import path from "node:path";
 import { Command } from "commander";
 import { installToolFiles } from "../core/installer";
 import { addInstalledToolToConfig } from "../core/project-config";
+import { ensureProjectTypings } from "../core/project-deps";
 import { logger } from "../core/logger";
 import {
   fetchToolFile,
@@ -42,6 +43,7 @@ export async function runAddCommand(
       files
     });
     await addInstalledToolToConfig(projectRoot, toolName);
+    const typings = await ensureProjectTypings(projectRoot);
 
     const relativeTarget = path.relative(projectRoot, result.toolDirectory) || result.toolDirectory;
     spinner.succeed(logger.format(`Installed ${toolName} -> ${relativeTarget}`));
@@ -58,6 +60,15 @@ export async function runAddCommand(
       for (const file of result.skippedFiles) {
         logger.item(file);
       }
+    }
+
+    if (typings.createdTsconfig) {
+      logger.info("Created tsconfig.json with Node typings enabled.");
+    }
+    if (typings.addedDevDeps.length > 0) {
+      logger.info(
+        `Added devDependencies: ${typings.addedDevDeps.join(", ")}. Run your package manager's install to fetch them.`
+      );
     }
   } catch (error: unknown) {
     spinner.stop();

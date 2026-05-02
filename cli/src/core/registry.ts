@@ -2,7 +2,7 @@ import path from "node:path";
 import fs from "fs-extra";
 import axios, { AxiosError } from "axios";
 
-const DEFAULT_REGISTRY_BASE_URL = "https://raw.githubusercontent.com/arreyhq/arrey-registry/main";
+const DEFAULT_REGISTRY_BASE_URL = "https://raw.githubusercontent.com/jordan-ae/arrey/main/registry";
 const REGISTRY_BASE_URL = (process.env.ARREY_REGISTRY_BASE_URL ?? DEFAULT_REGISTRY_BASE_URL).replace(
   /\/+$/,
   ""

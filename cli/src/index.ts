@@ -66,12 +66,12 @@ export const arrey = {
     };
     rebuildRuntime();
   },
-  async run<TInput extends Record<string, unknown> = Record<string, unknown>, TOutput = unknown>(
+  async run<TInput = unknown, TOutput = unknown>(
     toolName: string,
     input: TInput,
     options?: RunOptions
   ): Promise<TOutput> {
-    return runtime.run(toolName, input, options) as Promise<TOutput>;
+    return runtime.run(toolName, input as Record<string, unknown>, options) as Promise<TOutput>;
   },
   toJSON(toolNames?: string[]): Promise<Record<string, ToolJsonDefinition>> {
     return runtime.toJSON(toolNames);
